@@ -1,19 +1,26 @@
-import path from 'path'
+import alias from '@rollup/plugin-alias'
+import babel from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
-import commonjs from '@rollup/plugin-commonjs'
-import url from '@rollup/plugin-url'
-import svelte from 'rollup-plugin-svelte'
-import babel from '@rollup/plugin-babel'
-import { terser } from 'rollup-plugin-terser'
-import sveltePreprocess from 'svelte-preprocess'
 import typescript from '@rollup/plugin-typescript'
+import url from '@rollup/plugin-url'
+import path from 'path'
+import svelte from 'rollup-plugin-svelte'
+import { terser } from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup.js'
+import sveltePreprocess from 'svelte-preprocess'
 import pkg from './package.json'
 
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
 const legacy = !!process.env.SAPPER_LEGACY_BUILD
+const aliasPlugin = alias({
+  resolve: ['.svelte', '.js'],
+  entries: {
+    '@': 'src',
+  },
+})
 
 const onwarn = (warning, onwarn) =>
   (warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
@@ -26,6 +33,7 @@ export default {
     input: config.client.input().replace(/\.js$/, '.ts'),
     output: config.client.output(),
     plugins: [
+      aliasPlugin,
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
@@ -86,6 +94,7 @@ export default {
     input: { server: config.server.input().server.replace(/\.js$/, '.ts') },
     output: config.server.output(),
     plugins: [
+      aliasPlugin,
       replace({
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode),
@@ -120,6 +129,7 @@ export default {
     input: config.serviceworker.input().replace(/\.js$/, '.ts'),
     output: config.serviceworker.output(),
     plugins: [
+      aliasPlugin,
       resolve(),
       replace({
         'process.browser': true,
