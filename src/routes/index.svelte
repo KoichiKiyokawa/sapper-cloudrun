@@ -1,11 +1,12 @@
 <script context="module" lang="ts">
-  export async function preload(page: { query: string }) {
+  export async function preload(page: { query: { hoge: string } }) {
     return { query: page.query }
   }
 </script>
 
 <script lang="ts">
-  export let query: string
+  export let query: { hoge: string }
+  console.log(query)
 </script>
 
 <svelte:head>
@@ -13,4 +14,4 @@
 </svelte:head>
 
 <h1>Great success!</h1>
-<p>{query}</p>
+<p>{query.hoge}</p>
