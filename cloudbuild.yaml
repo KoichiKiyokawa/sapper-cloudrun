@@ -1,10 +1,13 @@
 steps:
   - name: node:12-alpine
-    args: ['sh', '-c', 'printenv ENV_TS > src/env.ts && printenv FIREBASE_ADMIN_CREDENTIALS > credentials.json && yarn && yarn fmt:check && yarn tsc --noEmit && yarn validate']
+    id: Setup and run type check
+    args:
+      - sh
+      - '-c',
+      - 'printenv ENV_TS > src/env.ts && printenv FIREBASE_ADMIN_CREDENTIALS > credentials.json && yarn && yarn fmt:check && yarn tsc --noEmit && yarn validate'
     env:
       - ENV_TS=$_ENV_TS
       - FIREBASE_ADMIN_CREDENTIALS=$_FIREBASE_ADMIN_CREDENTIALS
-    id: Setup and run type check
   - name: gcr.io/cloud-builders/docker
     args:
       - build
