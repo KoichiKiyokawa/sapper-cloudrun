@@ -3,7 +3,7 @@ steps:
     id: Setup and run type check
     args:
       - sh
-      - '-c',
+      - '-c'
       - 'printenv ENV_TS > src/env.ts && printenv FIREBASE_ADMIN_CREDENTIALS > credentials.json && yarn && yarn fmt:check && yarn tsc --noEmit && yarn validate'
     env:
       - ENV_TS=$_ENV_TS
