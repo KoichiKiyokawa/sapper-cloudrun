@@ -1,15 +1,13 @@
 steps:
   - name: busybox
-    args:
-      - sh
-      - '-c'
-      - echo "$_ENV_TS" > src/env.ts
+    args: ['sh', '-c', 'printenv ENV_TS > src/env.ts']
+    env:
+      - ENV_TS=$_ENV_TS
     id: Setup env.ts
   - name: busybox
-    args:
-      - sh
-      - '-c'
-      - echo '$_FIREBASE_ADMIN_CREDENTIALS' > credentials.json
+    args: ['sh', '-c', 'printenv FIREBASE_ADMIN_CREDENTIALS> credentials.json']
+    env:
+      - FIREBASE_ADMIN_CREDENTIALS=$_FIREBASE_ADMIN_CREDENTIALS
     id: Setup credentials.json
   - name: gcr.io/cloud-builders/docker
     args:
