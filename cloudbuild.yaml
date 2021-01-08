@@ -9,7 +9,7 @@ steps:
     args:
       - sh
       - '-c'
-      - echo $_FIREBASE_ADMIN_CREDENTIALS > credentials.json
+      - echo $_FIREBASE_ADMIN_CREDENTIALS > credentials.json # JSONを環境変数に指定するときは、シングルクォートで囲う必要があることに注意
     id: Setup credentials.json
   - name: gcr.io/cloud-builders/docker
     args:
