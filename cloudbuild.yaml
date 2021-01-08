@@ -1,14 +1,10 @@
 steps:
-  - name: busybox
-    args: ['sh', '-c', 'printenv ENV_TS > src/env.ts']
+  - name: node:12-alpine
+    args: ['sh', '-c', 'printenv ENV_TS > src/env.ts && printenv FIREBASE_ADMIN_CREDENTIALS > credentials.json && yarn && yarn fmt:check && yarn tsc --noEmit && yarn validate']
     env:
       - ENV_TS=$_ENV_TS
-    id: Setup env.ts
-  - name: busybox
-    args: ['sh', '-c', 'printenv FIREBASE_ADMIN_CREDENTIALS> credentials.json']
-    env:
       - FIREBASE_ADMIN_CREDENTIALS=$_FIREBASE_ADMIN_CREDENTIALS
-    id: Setup credentials.json
+    id: Setup and run type check
   - name: gcr.io/cloud-builders/docker
     args:
       - build
