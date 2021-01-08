@@ -11,6 +11,7 @@ import { terser } from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup.js'
 import sveltePreprocess from 'svelte-preprocess'
 import pkg from './package.json'
+import json from '@rollup/plugin-json'
 
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
@@ -18,7 +19,7 @@ const legacy = !!process.env.SAPPER_LEGACY_BUILD
 const aliasPlugin = alias({
   resolve: ['.svelte', '.js'],
   entries: {
-    '@': 'src',
+    '@': path.resolve(__dirname, 'src'),
   },
 })
 
@@ -49,6 +50,7 @@ export default {
         sourceDir: path.resolve(__dirname, 'src/node_modules/images'),
         publicPath: '/client/',
       }),
+      json(),
       resolve({
         browser: true,
         dedupe: ['svelte'],
@@ -113,6 +115,7 @@ export default {
         publicPath: '/client/',
         emitFiles: false, // already emitted by client build
       }),
+      json(),
       resolve({
         dedupe: ['svelte'],
       }),
@@ -120,7 +123,6 @@ export default {
       typescript({ sourceMap: dev }),
     ],
     external: Object.keys(pkg.dependencies).concat(require('module').builtinModules),
-
     preserveEntrySignatures: 'strict',
     onwarn,
   },

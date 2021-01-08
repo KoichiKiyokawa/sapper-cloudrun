@@ -1,8 +1,10 @@
 {
   "extend": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Node",
     "lib": ["DOM", "ESNext", "WebWorker"],
-    "target": "ES5",
+    "target": "ES6",
     "strict": true,
     "baseUrl": "./",
     "paths": {

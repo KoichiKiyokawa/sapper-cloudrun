@@ -1,5 +1,5 @@
-import { firestore } from '@/plugins/firebase'
 import type firebase from 'firebase/app'
+import { firestoreAdmin } from '../util'
 import { convertTimestampToDateRecursively } from '../util'
 
 type FromFirestore<T extends Object> = {
@@ -12,6 +12,7 @@ export class UserRepository {
   }
 
   get collectionReference(): firebase.firestore.CollectionReference<User> {
+    const firestore = (firestoreAdmin as unknown) as firebase.firestore.Firestore
     return firestore.collection(this.collectionName).withConverter<User>({
       fromFirestore: (snap) => convertTimestampToDateRecursively<User>(snap.data()),
       toFirestore: (data: User) => data,

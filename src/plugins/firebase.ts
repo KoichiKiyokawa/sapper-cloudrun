@@ -3,7 +3,7 @@ import { firebaseConfig } from '../env'
 import 'firebase/auth'
 import 'firebase/firestore'
 
-if (process.browser && firebase.apps.length === 0) {
+if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig)
 }
 
