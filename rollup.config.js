@@ -22,6 +22,11 @@ const aliasPlugin = alias({
     '@': path.resolve(__dirname, 'src'),
   },
 })
+const preprocess = sveltePreprocess({
+  postcss: {
+    plugins: [require('tailwindcss')],
+  },
+})
 
 const onwarn = (warning, onwarn) =>
   (warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
@@ -40,7 +45,7 @@ export default {
         'process.env.NODE_ENV': JSON.stringify(mode),
       }),
       svelte({
-        preprocess: sveltePreprocess(),
+        preprocess,
         compilerOptions: {
           dev,
           hydratable: true,
@@ -102,7 +107,7 @@ export default {
         'process.env.NODE_ENV': JSON.stringify(mode),
       }),
       svelte({
-        preprocess: sveltePreprocess(),
+        preprocess,
         compilerOptions: {
           dev,
           generate: 'ssr',
