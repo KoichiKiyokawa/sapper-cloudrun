@@ -10,6 +10,7 @@ RUN yarn --prod=false
 
 COPY . .
 
-RUN yarn build && rm -rf node_modules && yarn install --prod
+# buildを行わないとsrc/node_modules/@sapperが生成されず、Type Checkを走らせることができない。CIの実行時間節約のためここで行う
+RUN yarn build && yarn fmt:check && yarn tsc --noEmit && yarn validate && rm -rf node_modules && yarn install --prod
 
 CMD ["yarn", "start"]

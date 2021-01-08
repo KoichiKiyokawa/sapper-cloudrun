@@ -1,10 +1,10 @@
 steps:
-  - name: node:12-alpine
+  - name: busybox
     id: Setup and run type check
     args:
       - sh
       - '-c'
-      - 'printenv ENV_TS > src/env.ts && printenv FIREBASE_ADMIN_CREDENTIALS > credentials.json && yarn && yarn fmt:check && yarn tsc --noEmit && yarn validate'
+      - 'printenv ENV_TS > src/env.ts && printenv FIREBASE_ADMIN_CREDENTIALS > credentials.json'
     env:
       - ENV_TS=$_ENV_TS
       - FIREBASE_ADMIN_CREDENTIALS=$_FIREBASE_ADMIN_CREDENTIALS
