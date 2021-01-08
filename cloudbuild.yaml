@@ -1,6 +1,6 @@
 steps:
   - name: busybox
-    id: Setup and run type check
+    id: Setup secret file
     args:
       - sh
       - '-c'
