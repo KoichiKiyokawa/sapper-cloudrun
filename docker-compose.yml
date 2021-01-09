@@ -1,0 +1,14 @@
+version: '3'
+services:
+  front:
+    working_dir: /usr/src/app
+    image: node:12-alpine
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/app/credentials.json
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 3000:3000
+      - 10000:10000
+      - 35729:35729 # livereload port
+    command: yarn dev
