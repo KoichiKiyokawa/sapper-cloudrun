@@ -4,7 +4,7 @@ steps:
     args:
       - sh
       - '-c'
-      - 'printenv ENV_TS > src/env.ts && printenv FIREBASE_ADMIN_CREDENTIALS > credentials.json'
+      - 'printenv ENV_TS | base64 -d > src/env.ts && printenv FIREBASE_ADMIN_CREDENTIALS | base64 -d > credentials.json'
     env:
       - ENV_TS=$_ENV_TS
       - FIREBASE_ADMIN_CREDENTIALS=$_FIREBASE_ADMIN_CREDENTIALS
