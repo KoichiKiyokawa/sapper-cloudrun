@@ -26,7 +26,7 @@ async function common<T>(
 
   const token = await AuthService.getToken()
   console.log({ token })
-  const basePath = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.DOMAIN
+  const basePath = `${window.location.protocol}//${window.location.host}`
   return fetch(basePath + endpoint, {
     method,
     headers: {
