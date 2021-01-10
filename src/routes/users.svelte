@@ -1,22 +1,27 @@
 <script context="module" lang="ts">
   export async function preload(page: { query: { hoge: string } }) {
-    // @ts-expect-error
-    const userResponses: ApiResponse<User>[] = await this.fetch('/api/users.json').then((res) => res.json())
-    const users: User[] = userResponses.map((user) => ({
+    return { query: page.query }
+  }
+</script>
+
+<script lang="ts">
+  import { onMount } from 'svelte'
+
+  let users: User[] = []
+  export let query: { title: string }
+  $: title = query?.title ?? 'no title'
+
+  onMount(async () => {
+    const { api } = await import('@/utils/apiCall')
+    const userResponses = (await api.get<ApiResponse<User>[]>('/api/users.json', { auth: true })) ?? []
+    users = userResponses.map((user) => ({
       ...user.data,
       birthday: new Date(user.data.birthday),
       createdAt: new Date(user.data.createdAt),
       updatedAt: new Date(user.data.updatedAt),
       deletedAt: user.data.deletedAt ? new Date(user.data.deletedAt) : null,
     }))
-    return { users, query: page.query }
-  }
-</script>
-
-<script lang="ts">
-  export let users: User[]
-  export let query: { title: string }
-  $: title = query?.title ?? 'no title'
+  })
 </script>
 
 <svelte:head>

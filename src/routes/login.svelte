@@ -1,15 +1,15 @@
 <script lang="ts">
   import { goto } from '@sapper/app'
-  import { AuthService } from '@/services/AuthService'
 
   let email: string
   let password: string
   let loading = false
 
-  function onSubmit() {
+  async function onSubmit() {
     loading = true
+    const { AuthService } = await import('@/services/AuthService')
     AuthService.login(email, password)
-      .then(() => goto('home'))
+      .then(() => goto('/'))
       .catch(() => alert('ログインに失敗しました'))
       .finally(() => (loading = false))
   }

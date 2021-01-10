@@ -1,20 +1,38 @@
-import { firebase } from '@/plugins/firebase'
+import { AuthService } from '@/services/AuthService'
+import fetch from 'node-fetch'
 
-export async function api(endpoint: string, data: Object = {}, { auth }: { auth: boolean } = { auth: false }) {
-  const token = auth ? await firebase.auth().currentUser?.getIdToken() : undefined
-  return {
-    get: () => common(endpoint, 'GET', data, token),
-    post: () => common(endpoint, 'POST', data, token),
-  }
+/**
+ * @example
+ * api.get('/users')
+ */
+export const api = {
+  get: <T>(
+    endpoint: string,
+    { data, auth }: { data?: Object; auth: boolean } = { auth: false }
+  ): Promise<T | undefined> => common<T>(endpoint, 'GET', data, { auth }),
+  post: <T>(
+    endpoint: string,
+    { data, auth }: { data?: Object; auth: boolean } = { auth: false }
+  ): Promise<T | undefined> => common<T>(endpoint, 'POST', data, { auth }),
 }
 
-function common(endpoint: string, method: 'GET' | 'POST', data: Object, token?: string) {
-  return fetch(endpoint, {
+async function common<T>(
+  endpoint: string,
+  method: 'GET' | 'POST',
+  data?: Object,
+  { auth }: { auth: boolean } = { auth: false }
+): Promise<T | undefined> {
+  if (auth && !process.browser) return undefined
+
+  const token = await AuthService.getToken()
+  console.log({ token })
+  const basePath = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.DOMAIN
+  return fetch(basePath + endpoint, {
     method,
     headers: {
       'Content-Type': 'application/json',
       ...(token && { Authorization: token }),
     },
-    body: JSON.stringify(data),
+    ...(data && { body: JSON.stringify(data) }),
   }).then((res) => res.json())
 }
