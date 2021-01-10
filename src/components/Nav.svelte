@@ -11,6 +11,9 @@
       <a aria-current={segment === undefined ? 'page' : undefined} href=".">home</a>
     </li>
     <li>
+      <a aria-current={segment === 'users' ? 'page' : undefined} href="users">users</a>
+    </li>
+    <li>
       <a aria-current={segment === 'about' ? 'page' : undefined} href="about">about</a>
     </li>
 
