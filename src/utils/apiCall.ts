@@ -25,7 +25,6 @@ async function common<T>(
   if (auth && !process.browser) return undefined
 
   const token = await AuthService.getToken()
-  console.log({ token })
   const basePath = `${window.location.protocol}//${window.location.host}`
   return fetch(basePath + endpoint, {
     method,

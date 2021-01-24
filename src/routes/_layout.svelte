@@ -1,20 +1,16 @@
+<script context="module" lang="ts">
+  export async function preload(this: any, page: { path: string }, session: { token?: string }) {
+    console.log({ session })
+    const whitePathList = ['/login']
+    if (!whitePathList.includes(page.path) && session?.token == null) this.redirect(302, 'login')
+  }
+</script>
+
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { goto } from '@sapper/app'
   import Nav from '@/components/Nav.svelte'
 
   export let segment: string
-  const whitePathList = ['login']
-
-  let loading = true
-  onMount(async () => {
-    if (whitePathList.includes(segment)) return (loading = false)
-
-    const { AuthService } = await import('@/services/AuthService')
-    if (!(await AuthService.checkAuth())) return goto('login')
-
-    loading = false
-  })
+  let loading = false
 </script>
 
 {#if loading}

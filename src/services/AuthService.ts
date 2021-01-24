@@ -1,8 +1,9 @@
 import { firebase } from '@/plugins/firebase'
 
 export class AuthService {
-  static login(email: string, password: string) {
-    return firebase.auth().signInWithEmailAndPassword(email, password)
+  static async login(email: string, password: string): Promise<string | undefined> {
+    const response = await firebase.auth().signInWithEmailAndPassword(email, password)
+    return response.user?.getIdToken()
   }
 
   static logout() {

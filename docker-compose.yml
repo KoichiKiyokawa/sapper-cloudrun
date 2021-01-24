@@ -7,8 +7,12 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/app/credentials.json
     volumes:
       - .:/usr/src/app
+      - node_modules:/usr/src/app/node_modules:delegated
     ports:
       - 3000:3000
       - 10000:10000
       - 35729:35729 # livereload port
     command: yarn dev
+
+volumes:
+  node_modules:
